@@ -18,5 +18,7 @@ namespace VPN.Contracts
         public Task CreateCompany(CompanyModel company);
         public Task UpdateCompany(int id, CompanyModel company);
         public Task DeleteCompany(int id);
+
+        public Task<IEnumerable<GroupModel>> GetGroups(int companyID);
     }
 }

@@ -10,8 +10,8 @@ namespace VPN.Controllers
     public class CompaniesController : ControllerBase
     {
         private readonly IVPNRepository _reposity;
-        private readonly ILogger<TestController> logger;
-        public CompaniesController(IVPNRepository reposity, ILogger<TestController> logger)
+        private readonly ILogger<CompaniesController> logger;
+        public CompaniesController(IVPNRepository reposity, ILogger<CompaniesController> logger)
         {
             _reposity = reposity;
             this.logger = logger;

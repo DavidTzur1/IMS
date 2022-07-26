@@ -171,6 +171,16 @@ namespace VPN.Repository
             }
         }
 
+        public async Task<IEnumerable<GroupModel>> GetGroups(int companyID)
+        {
+            var procedureName = "GetGroups";
+            using (var connection = _context.CreateConnection())
+            {
+                var groups = await connection.QueryAsync<GroupModel>(procedureName, new { companyID }, commandType: CommandType.StoredProcedure);
+                return groups.ToList();
+            }
+        }
+
 
 
     }
