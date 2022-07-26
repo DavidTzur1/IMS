@@ -20,8 +20,10 @@ namespace VPN.Controllers
         {
             try
             {
+                
                 var user = await _reposity.GetUserByCLI(cli);
                 if (user == null) return NotFound();
+                logger.LogInformation(user.ToString());
                 return Ok(user);
             }
 

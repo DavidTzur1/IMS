@@ -10,5 +10,13 @@ namespace VPN.Contracts
         public Task<UserModel> GetUserByCLI(string cli);
         public Task<UserModel> GetUserByPrivateNumber(int companyID, string number);
         public Task<UserModel> GetUserByCalledNumber(int companyID, string number);
+
+        //////////////Prov/////////////////////////
+
+        public Task<IEnumerable<CompanyModel>> GetCompanies();
+        public Task<CompanyModel> GetCompany(int id);
+        public Task CreateCompany(CompanyModel company);
+        public Task UpdateCompany(int id, CompanyModel company);
+        public Task DeleteCompany(int id);
     }
 }

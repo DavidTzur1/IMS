@@ -3,6 +3,7 @@
     public class UserModel
     {
         public int CompanyID { get; set; } = -1;
+        public string CompanyName { get; set; } = string.Empty;
         public int GroupID { get; set; }
         public int PABXID { get; set; }
         public string CLI { get; set; } = string.Empty;

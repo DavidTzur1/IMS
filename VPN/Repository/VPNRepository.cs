@@ -103,8 +103,75 @@ namespace VPN.Repository
                     return user;
                 }
             }
-           
-       
+
+        public async Task<IEnumerable<CompanyModel>> GetCompanies()
+        {
+            var procedureName = "GetCompanies";
+            using (var connection = _context.CreateConnection())
+            {
+                var companies = await connection.QueryAsync<CompanyModel>(procedureName, commandType: CommandType.StoredProcedure);
+                return companies.ToList();
+            }
+        }
+
+        public async Task<CompanyModel> GetCompany(int id)
+        {
+            var procedureName = "GetCompany";
+            using (var connection = _context.CreateConnection())
+            {
+                var company = await connection.QuerySingleOrDefaultAsync<CompanyModel>(procedureName, new { id }, commandType: CommandType.StoredProcedure);
+                return company;
+            }
+        }
+
+        public async Task CreateCompany(CompanyModel company)
+        {
+            var procedureName = "CreateCompany";
+            var parameters = new DynamicParameters();
+            parameters.Add("companyID", company.CompanyID, DbType.Int32, ParameterDirection.Input);
+            parameters.Add("companyName", company.CompanyName, DbType.String, ParameterDirection.Input);
+            parameters.Add("billingID", company.BillingID, DbType.Int32, ParameterDirection.Input);
+            parameters.Add("isDeactivated", company.IsDeactivated, DbType.Boolean, ParameterDirection.Input);
+            parameters.Add("isForceOnNet", company.IsForceOnNet, DbType.Boolean, ParameterDirection.Input);
+            parameters.Add("isCompanyCallsOnly", company.IsCompanyCallsOnly, DbType.Boolean, ParameterDirection.Input);
+            parameters.Add("outgoingCallBarringList", company.OutgoingCallBarringList, DbType.String, ParameterDirection.Input);
+            parameters.Add("outgoingCallAllowanceList", company.OutgoingCallAllowanceList, DbType.String, ParameterDirection.Input);
+            using (var connection = _context.CreateConnection())
+            {
+                await connection.ExecuteAsync(procedureName, parameters, commandType: CommandType.StoredProcedure);
+            }
+        }
+
+        public async Task UpdateCompany(int id, CompanyModel company)
+        {
+            var procedureName = "UpdateCompany";
+            var parameters = new DynamicParameters();
+            parameters.Add("id", id, DbType.Int32, ParameterDirection.Input);
+            parameters.Add("companyName", company.CompanyName, DbType.String, ParameterDirection.Input);
+            parameters.Add("billingID", company.BillingID, DbType.Int32, ParameterDirection.Input);
+            parameters.Add("isDeactivated", company.IsDeactivated, DbType.Boolean, ParameterDirection.Input);
+            parameters.Add("isForceOnNet", company.IsForceOnNet, DbType.Boolean, ParameterDirection.Input);
+            parameters.Add("isCompanyCallsOnly", company.IsCompanyCallsOnly, DbType.Boolean, ParameterDirection.Input);
+            parameters.Add("outgoingCallBarringList", company.OutgoingCallBarringList, DbType.String, ParameterDirection.Input);
+            parameters.Add("outgoingCallAllowanceList", company.OutgoingCallAllowanceList, DbType.String, ParameterDirection.Input);
+            using (var connection = _context.CreateConnection())
+            {
+                await connection.ExecuteAsync(procedureName, parameters, commandType: CommandType.StoredProcedure);
+            }
+        }
+
+        public async Task DeleteCompany(int id)
+        {
+            //var query = "DELETE FROM Companies WHERE Id = @Id";
+            var procedureName = "UpdateCompany";
+            using (var connection = _context.CreateConnection())
+            {
+                //await connection.ExecuteAsync(query, new { id });
+                await connection.ExecuteAsync(procedureName, new { id }, commandType: CommandType.StoredProcedure);
+            }
+        }
+
+
 
     }
 }
