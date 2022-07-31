@@ -7,24 +7,24 @@ namespace VPN.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class GroupsController : ControllerBase
+    public class ScreeningsController : ControllerBase
     {
-        private readonly IGroupRepository _reposity;
-        private readonly ILogger<GroupsController> logger;
-        public GroupsController(IGroupRepository reposity, ILogger<GroupsController> logger)
+        private readonly IScreeningRepository _reposity;
+        private readonly ILogger<ScreeningsController> logger;
+        public ScreeningsController(IScreeningRepository reposity, ILogger<ScreeningsController> logger)
         {
             _reposity = reposity;
             this.logger = logger;
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetCompanyGroups(int companyID)
+        public async Task<IActionResult> GetScreeningsByCompanyID(int companyID)
         {
             try
             {
-                var groups = await _reposity.GetGroupsByCompanyID(companyID);
-                return Ok(groups);
-               
+                var screenings = await _reposity.GetScreeningsByCompanyID(companyID);
+                return Ok(screenings);
+
             }
             catch (Exception ex)
             {
@@ -33,15 +33,15 @@ namespace VPN.Controllers
             }
         }
 
-        [HttpGet("{id}", Name = "GroupById")]
-        public async Task<IActionResult> GetGroup(int id)
+        [HttpGet("{id}", Name = "ScreeningById")]
+        public async Task<IActionResult> GetScreening(int id)
         {
             try
             {
-                var group = await _reposity.GetGroup(id);
-                if (group == null)
+                var screening = await _reposity.GetScreening(id);
+                if (screening == null)
                     return NotFound();
-                return Ok(group);
+                return Ok(screening);
             }
             catch (Exception ex)
             {
@@ -51,12 +51,12 @@ namespace VPN.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateGroup(GroupDTO group)
+        public async Task<IActionResult> CreateScreening(ScreeningForCreationDto screening)
         {
             try
             {
-                var createdGroup = await _reposity.CreateGroup(group);
-                return CreatedAtRoute("GroupById", new { id = createdGroup.ID }, createdGroup);
+                var createdGroup = await _reposity.CreateScreening(screening);
+                return CreatedAtRoute("ScreeningById", new { id = createdGroup.ID }, createdGroup);
             }
             catch (Exception ex)
             {
@@ -66,14 +66,14 @@ namespace VPN.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateGroup(int id, GroupDTO group)
+        public async Task<IActionResult> UpdateScreening(int id, ScreeningForUpdateDto screening)
         {
             try
             {
-                var dbGroup = await _reposity.GetGroup(id);
-                if (dbGroup == null)
+                var dbScreening = await _reposity.GetScreening(id);
+                if (dbScreening == null)
                     return NotFound();
-                await _reposity.UpdateGroup(id, group);
+                await _reposity.UpdateScreening(id, screening);
                 return NoContent();
             }
             catch (Exception ex)
@@ -84,14 +84,14 @@ namespace VPN.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteGroup(int id)
+        public async Task<IActionResult> DeleteScreening(int id)
         {
             try
             {
-                var dbgroup = await _reposity.GetGroup(id);
-                if (dbgroup == null)
+                var dbscreening = await _reposity.GetScreening(id);
+                if (dbscreening == null)
                     return NotFound();
-                await _reposity.DeleteGroup(id);
+                await _reposity.DeleteScreening(id);
                 return NoContent();
             }
             catch (Exception ex)
@@ -105,3 +105,4 @@ namespace VPN.Controllers
     }
 
 }
+

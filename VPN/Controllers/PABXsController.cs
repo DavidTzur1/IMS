@@ -7,24 +7,24 @@ namespace VPN.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class GroupsController : ControllerBase
+    public class PABXsController : ControllerBase
     {
-        private readonly IGroupRepository _reposity;
-        private readonly ILogger<GroupsController> logger;
-        public GroupsController(IGroupRepository reposity, ILogger<GroupsController> logger)
+        private readonly IPABXRepository _reposity;
+        private readonly ILogger<PABXsController> logger;
+        public PABXsController(IPABXRepository reposity, ILogger<PABXsController> logger)
         {
             _reposity = reposity;
             this.logger = logger;
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetCompanyGroups(int companyID)
+        public async Task<IActionResult> GetPABXsByGroupID(int groupID)
         {
             try
             {
-                var groups = await _reposity.GetGroupsByCompanyID(companyID);
-                return Ok(groups);
-               
+                var pabxs = await _reposity.GetPABXsByGroupID(groupID);
+                return Ok(pabxs);
+
             }
             catch (Exception ex)
             {
@@ -33,15 +33,15 @@ namespace VPN.Controllers
             }
         }
 
-        [HttpGet("{id}", Name = "GroupById")]
+        [HttpGet("{id}", Name = "PABXById")]
         public async Task<IActionResult> GetGroup(int id)
         {
             try
             {
-                var group = await _reposity.GetGroup(id);
-                if (group == null)
+                var pabx = await _reposity.GetPABX(id);
+                if (pabx == null)
                     return NotFound();
-                return Ok(group);
+                return Ok(pabx);
             }
             catch (Exception ex)
             {
@@ -51,12 +51,12 @@ namespace VPN.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateGroup(GroupDTO group)
+        public async Task<IActionResult> CreatePABX(PABXDTO pabx)
         {
             try
             {
-                var createdGroup = await _reposity.CreateGroup(group);
-                return CreatedAtRoute("GroupById", new { id = createdGroup.ID }, createdGroup);
+                var createdPABX = await _reposity.CreatePABX(pabx);
+                return CreatedAtRoute("PABXById", new { id = createdPABX.ID }, createdPABX);
             }
             catch (Exception ex)
             {
@@ -66,14 +66,14 @@ namespace VPN.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateGroup(int id, GroupDTO group)
+        public async Task<IActionResult> UpdatePABX(int id, PABXDTO pabx)
         {
             try
             {
-                var dbGroup = await _reposity.GetGroup(id);
-                if (dbGroup == null)
+                var dbpabx = await _reposity.GetPABX(id);
+                if (dbpabx == null)
                     return NotFound();
-                await _reposity.UpdateGroup(id, group);
+                await _reposity.UpdatePABX(id, pabx);
                 return NoContent();
             }
             catch (Exception ex)
@@ -88,10 +88,10 @@ namespace VPN.Controllers
         {
             try
             {
-                var dbgroup = await _reposity.GetGroup(id);
-                if (dbgroup == null)
+                var dbpabx = await _reposity.GetPABX(id);
+                if (dbpabx == null)
                     return NotFound();
-                await _reposity.DeleteGroup(id);
+                await _reposity.DeletePABX(id);
                 return NoContent();
             }
             catch (Exception ex)
@@ -105,3 +105,4 @@ namespace VPN.Controllers
     }
 
 }
+

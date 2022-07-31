@@ -7,24 +7,24 @@ namespace VPN.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class GroupsController : ControllerBase
+    public class RangesController : ControllerBase
     {
-        private readonly IGroupRepository _reposity;
-        private readonly ILogger<GroupsController> logger;
-        public GroupsController(IGroupRepository reposity, ILogger<GroupsController> logger)
+        private readonly IRangeRepository _reposity;
+        private readonly ILogger<RangesController> logger;
+        public RangesController(IRangeRepository reposity, ILogger<RangesController> logger)
         {
             _reposity = reposity;
             this.logger = logger;
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetCompanyGroups(int companyID)
+        public async Task<IActionResult> GetRangesByPABXID(int pabxID)
         {
             try
             {
-                var groups = await _reposity.GetGroupsByCompanyID(companyID);
-                return Ok(groups);
-               
+                var ranges = await _reposity.GetRangesByPABXID(pabxID);
+                return Ok(ranges);
+
             }
             catch (Exception ex)
             {
@@ -33,15 +33,15 @@ namespace VPN.Controllers
             }
         }
 
-        [HttpGet("{id}", Name = "GroupById")]
-        public async Task<IActionResult> GetGroup(int id)
+        [HttpGet("{id}", Name = "RangeById")]
+        public async Task<IActionResult> GetRange(int id)
         {
             try
             {
-                var group = await _reposity.GetGroup(id);
-                if (group == null)
+                var range = await _reposity.GetRange(id);
+                if (range == null)
                     return NotFound();
-                return Ok(group);
+                return Ok(range);
             }
             catch (Exception ex)
             {
@@ -51,12 +51,12 @@ namespace VPN.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateGroup(GroupDTO group)
+        public async Task<IActionResult> CreateRange(RangeDTO range)
         {
             try
             {
-                var createdGroup = await _reposity.CreateGroup(group);
-                return CreatedAtRoute("GroupById", new { id = createdGroup.ID }, createdGroup);
+                var createdRange = await _reposity.CreateRange(range);
+                return CreatedAtRoute("RangeById", new { id = createdRange.ID }, createdRange);
             }
             catch (Exception ex)
             {
@@ -66,14 +66,14 @@ namespace VPN.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateGroup(int id, GroupDTO group)
+        public async Task<IActionResult> UpdateRange(int id, RangeDTO range)
         {
             try
             {
-                var dbGroup = await _reposity.GetGroup(id);
-                if (dbGroup == null)
+                var dbrange = await _reposity.GetRange(id);
+                if (dbrange == null)
                     return NotFound();
-                await _reposity.UpdateGroup(id, group);
+                await _reposity.UpdateRange(id, range);
                 return NoContent();
             }
             catch (Exception ex)
@@ -84,14 +84,14 @@ namespace VPN.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteGroup(int id)
+        public async Task<IActionResult> DeleteRange(int id)
         {
             try
             {
-                var dbgroup = await _reposity.GetGroup(id);
-                if (dbgroup == null)
+                var dbrange = await _reposity.GetRange(id);
+                if (dbrange == null)
                     return NotFound();
-                await _reposity.DeleteGroup(id);
+                await _reposity.DeleteRange(id);
                 return NoContent();
             }
             catch (Exception ex)
@@ -105,3 +105,6 @@ namespace VPN.Controllers
     }
 
 }
+
+
+
